@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>jQuery UI Datepicker - Select a Date Range</title>
+<!-- <script src="jquery-2.1.4.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<!-- <script src="jquery-ui-1.11.4.js"></script> -->
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+<!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
+
+<script>
+$(function() {
+
+$("#option1").hide();
+$("#option2").hide();
+	
+$( "#from" ).datepicker({
+defaultDate: "+1w",
+changeMonth: true,
+numberOfMonths: 1,
+onClose: function( selectedDate ) {
+$( "#to" ).datepicker( "option", "minDate", selectedDate );
+}
+});
+$( "#to" ).datepicker({
+defaultDate: "+1w",
+changeMonth: true,
+numberOfMonths: 1,
+onClose: function( selectedDate ) {
+$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+}
+});
+
+$("#checkButton").click(function(){
+    console.log('checkButton clicked');
+    showOptions();
+    }
+	);
+
+}); //on load function
+
+
+    function showOptions() {
+    	 console.log('showing options ... ');    
+    	 $("#option1").toggle();
+    	 $("#option2").toggle();
+        }    
+    
+
+
+</script>
+</head>
+<body>
+<label for="from">Select your dates first and press "Check dates" button </label> <p>
+<label for="from">From</label>
+<input type="text" id="from" name="from">
+<label for="to">to</label>
+<input type="text" id="to" name="to">
+<input type="submit" id="checkButton" value="Check dates"> <p>
+
+        <div id="option1" class = "option1">        
+        <h4>Option1</h4> 
+		<h5>Option1 outside:</h5> 
+		<img class="img1" src="option1.jpg">		
+		<!-- <p>Outside wow</p>   -->
+		<h5>Option1 inside:</h5> 
+		<img class="img1" src="option1.jpg">		
+		<!-- <p>Inside view</p>   -->
+		<h5>Option1 one more image:</h5> 
+		<img class="img1" src="option1.jpg">		
+		<!-- <p>Have a look</p>   -->        
+        </div>
+
+        <div id="option2" class = "option2">
+        <h4>Option1</h4> 
+		<h5>Option2 outside:</h5> 
+		<img class="img2" src="option1.jpg">		
+		<!-- <p>Outside wow</p>   -->
+		<h5>Option2 inside:</h5> 
+		<img class="img2" src="option1.jpg">		
+		<!-- <p>Inside view</p>   -->
+		<h5>Option2 one more image:</h5> 
+		<img class="img2" src="option1.jpg">		
+		<!-- <p>Have a look</p>   -->        
+        </div>
+
+
+</body>
+</html>
