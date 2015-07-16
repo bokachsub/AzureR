@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>jQuery UI Datepicker - Select a Date Range</title>
+<title>jQuery UI</title>
 <!-- <script src="jquery-2.1.4.js"></script> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <!-- <script src="jquery-ui-1.11.4.js"></script> -->
@@ -10,37 +10,83 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <!-- <link rel="stylesheet" href="/resources/demos/style.css"> -->
 
+<style type="text/css">
+
+.UnavailableDate a{
+   background-color : Red !important;
+   background-image :none !important;
+   color: White !important;
+   font-weight:bold !important;
+   font-size: 12pt;
+}
+</style>
+
 <script>
+
+//TO BE PULLED FROM THE DATABASE 
+var datesArray=['7/1/2015','7/4/2015']
+
 $(function() {
 
+//HIDING ALL AVAILABLE WAGONS
 $("#option1").hide();
 $("#option2").hide();
-	
+
+//FROM DATEPICKER	
 $( "#from" ).datepicker({
 defaultDate: "+1w",
 changeMonth: true,
 numberOfMonths: 1,
-onClose: function( selectedDate ) {
-$( "#to" ).datepicker( "option", "minDate", selectedDate );
-}
-});
+		onClose: function( selectedDate ) {
+		$( "#to" ).datepicker( "option", "minDate", selectedDate );
+		},
+        beforeShowDay: function(date) {        	
+        	var theday = (date.getMonth()+1) +'/'+ 
+							date.getDate()+ '/' + 
+							date.getFullYear();
+					return [true,$.inArray(theday, datesArray) >=0?"UnavailableDate":''];
+        }
+}); //from
+
+//TOdATEPICKER 
 $( "#to" ).datepicker({
 defaultDate: "+1w",
 changeMonth: true,
 numberOfMonths: 1,
-onClose: function( selectedDate ) {
-$( "#from" ).datepicker( "option", "maxDate", selectedDate );
-}
-});
+		onClose: function( selectedDate ) {
+		$( "#from" ).datepicker( "option", "maxDate", selectedDate );
+		},
+        beforeShowDay: function(date) {        	
+        	var theday = (date.getMonth()+1) +'/'+ 
+							date.getDate()+ '/' + 
+							date.getFullYear();
+					return [true,$.inArray(theday, datesArray) >=0?"UnavailableDate":''];
+        }
+}); //to
 
+//CHECK BUTTON SHOWS ALL AVAILABLE WAGONS
 $("#checkButton").click(function(){
     console.log('checkButton clicked');
     showOptions();
     }
 	);
 
+//ACTION ON SELECTION OF A WAGON
+$("input[type=radio][name=wagonOption]").on("change", function(){
+    switch($(this).val()){
+        case 'wagon1' :
+            alert("Wagon 1 selected");
+            break;
+        case 'wagon2' :
+            alert("Wagon 2 selected");
+            break;
+    }            
+})
+
 }); //on load function
 
+
+  // HELPER FUNCITONS 
 
     function showOptions() {
     	 console.log('showing options ... ');    
@@ -48,7 +94,6 @@ $("#checkButton").click(function(){
     	 $("#option2").toggle();
         }    
     
-
 
 </script>
 </head>
@@ -62,6 +107,7 @@ $("#checkButton").click(function(){
 
         <div id="option1" class = "option1">        
         <h4>Option1</h4> 
+        <h3><input type="radio" id="wagon1RadioButton" name="wagonOption" value="wagon1" /> Select Wagon 1 </h3>
 		<h5>Option1 outside:</h5> 
 		<img class="img1" src="option1.jpg">		
 		<!-- <p>Outside wow</p>   -->
@@ -74,7 +120,8 @@ $("#checkButton").click(function(){
         </div>
 
         <div id="option2" class = "option2">
-        <h4>Option1</h4> 
+        <h4>Option2</h4> 
+        <h3><input type="radio" id="wagon2RadioButton" name="wagonOption" value="wagon2" /> Select Wagon 2 </h3>
 		<h5>Option2 outside:</h5> 
 		<img class="img2" src="option1.jpg">		
 		<!-- <p>Outside wow</p>   -->
