@@ -19,24 +19,30 @@
    font-weight:bold !important;
    font-size: 12pt;
 }
+
+.SelectedWagon a{
+   background-color : Red !important;
+   background-image :none !important;
+   color: Red !important;
+   font-weight:bold !important;
+   font-size: 16pt;
+}
 </style>
 
 <script>
 
 //TO BE PULLED FROM THE DATABASE 
-var datesArray=['7/1/2015','7/4/2015']
+var datesArray=['7/10/2015','7/11/2015',"7/12/2015"]
 
 $(function() {
 
-//HIDING ALL AVAILABLE WAGONS
-$("#option1").hide();
-$("#option2").hide();
+ startAgain();
 
 //FROM DATEPICKER	
 $( "#from" ).datepicker({
 defaultDate: "+1w",
 changeMonth: true,
-numberOfMonths: 1,
+numberOfMonths: 1,        
 		onClose: function( selectedDate ) {
 		$( "#to" ).datepicker( "option", "minDate", selectedDate );
 		},
@@ -44,7 +50,7 @@ numberOfMonths: 1,
         	var theday = (date.getMonth()+1) +'/'+ 
 							date.getDate()+ '/' + 
 							date.getFullYear();
-					return [true,$.inArray(theday, datesArray) >=0?"UnavailableDate":''];
+					return [true,$.inArray(theday, datesArray) >=0?"UnavailableDate":''];            
         }
 }); //from
 
@@ -60,7 +66,7 @@ numberOfMonths: 1,
         	var theday = (date.getMonth()+1) +'/'+ 
 							date.getDate()+ '/' + 
 							date.getFullYear();
-					return [true,$.inArray(theday, datesArray) >=0?"UnavailableDate":''];
+					return [true,$.inArray(theday, datesArray) >=0?"UnavailableDate":''];            
         }
 }); //to
 
@@ -71,17 +77,36 @@ $("#checkButton").click(function(){
     }
 	);
 
+$("#clearButton").click(function(){
+    console.log('clearButton clicked');
+    startAgain();
+    }
+    );
+
 //ACTION ON SELECTION OF A WAGON
 $("input[type=radio][name=wagonOption]").on("change", function(){
     switch($(this).val()){
         case 'wagon1' :
-            alert("Wagon 1 selected");
+            showDocs();
+            // $("#option1").css({"background-color":"MediumAquamarine"});            
             break;
         case 'wagon2' :
-            alert("Wagon 2 selected");
+            showDocs();
+            // $("#option2").css({"background-color":"MediumAquamarine"});            
             break;
     }            
 })
+
+//ON DOWNLOAD
+$('#agreement').click(function(e) {
+    e.preventDefault();  //stop the browser from following
+    window.location.href = 'Docs/Agreement.docx';    
+});
+
+$('#insurance').click(function(e) {
+    e.preventDefault();  //stop the browser from following
+    window.location.href = 'Docs/Insurance.docx';    
+});
 
 }); //on load function
 
@@ -92,45 +117,67 @@ $("input[type=radio][name=wagonOption]").on("change", function(){
     	 console.log('showing options ... ');    
     	 $("#option1").toggle();
     	 $("#option2").toggle();
-        }    
+        }
+
+    function showDocs(){
+        console.log('showing documents ...');
+        $("#docs").show();
+    }    
+
+//HIDING ALL AVAILABLE WAGONS
+    function startAgain(){
+        $("#from").val("");
+        $("#to").val("");
+        $("#option1").hide();
+        $("#option2").hide();
+        $("#docs").hide();
+    }
     
 
 </script>
 </head>
 <body>
-<label for="from">Select your dates first and click "Check dates" button </label> <p>
+<h3>Select your dates first and click "Check dates" button </h3> <p>
 <label for="from">From</label>
 <input type="text" id="from" name="from">
 <label for="to">to</label>
 <input type="text" id="to" name="to">
-<input type="submit" id="checkButton" value="Check dates"> <p>
-
-        <div id="option1" class = "option1">        
-        <h4>Option1</h4> 
+<input type="submit" id="checkButton" value="Check dates"> <input type="submit" id="clearButton" value="Clear"> <p>
+        
+        <div id="option1" class = "option">                
         <h3><input type="radio" id="wagon1RadioButton" name="wagonOption" value="wagon1" /> Select Wagon 1 </h3>
-		<h5>Option1 outside:</h5> 
-		<img class="img1" src="option1.jpg">		
-		<!-- <p>Outside wow</p>   -->
-		<h5>Option1 inside:</h5> 
+		<!-- <h5>Option1 outside:</h5>  -->
+		<img class="img1" src="option1.jpg">				
+		<!-- <h5>Option1 inside:</h5>  -->
 		<img class="img1" src="option1.jpg">		
 		<!-- <p>Inside view</p>   -->
-		<h5>Option1 one more image:</h5> 
+		<!-- <h5>Option1 one more image:</h5>  -->
 		<img class="img1" src="option1.jpg">		
 		<!-- <p>Have a look</p>   -->        
         </div>
 
-        <div id="option2" class = "option2">
-        <h4>Option2</h4> 
+        <div id="option2" class = "option">        
         <h3><input type="radio" id="wagon2RadioButton" name="wagonOption" value="wagon2" /> Select Wagon 2 </h3>
-		<h5>Option2 outside:</h5> 
-		<img class="img2" src="option1.jpg">		
+		<!-- <h5>Option2 outside:</h5>  -->
+		<img class="img2" src="option2.jpg">		
 		<!-- <p>Outside wow</p>   -->
-		<h5>Option2 inside:</h5> 
-		<img class="img2" src="option1.jpg">		
+		<!-- <h5>Option2 inside:</h5>  -->
+		<img class="img2" src="option2.jpg">		
 		<!-- <p>Inside view</p>   -->
-		<h5>Option2 one more image:</h5> 
-		<img class="img2" src="option1.jpg">		
+		<!-- <h5>Option2 one more image:</h5>  -->
+		<img class="img2" src="option2.jpg">		
 		<!-- <p>Have a look</p>   -->        
+        </div>
+
+        <div id="docs" class = "docs"> 
+        <h3>Please, download and fill in the docs:</h3> 
+        <a id="agreement" href="Agreement">Download Agreement to sign</a>
+        <p> <a id="insurance" href="Insurance">Download Insurance Verification</a>
+        <h3>We will contact you in the next 30 minutes or less</h3> 
+        <p> Your Name: <input type="textarea" id="name" name="name" >
+        <p> Your Phone Number: <input type="textarea" id="phone" name="phone" >
+        <p> <input type="submit" id="submitButton" value="Submit Request"> <p>
+
         </div>
 
 
